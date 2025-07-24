@@ -211,7 +211,7 @@
   <img src="images\5l.png" alt="Logo 5" class="hide-on-mobile logo-gap-right"  />
 </div>  
 
- <!-- ✅ Wrapper added just for layout control -->
+ <!--  Wrapper added just for layout control -->
 <div class="all-product-cards">
 
   <!-- Product Cards section1-->
@@ -989,22 +989,50 @@ faqItems.forEach(item => {
     });
   });
 
+  //card company review 
+  window.addEventListener("load", function () {
+  if (window.innerWidth <= 768) {
+    const companyReviewCards = document.querySelector(".company-review-cards");
 
+    if (companyReviewCards) {
+      const swiperContainer = document.createElement("div");
+      swiperContainer.classList.add("swiper", "company-review-swiper");
 
+      const swiperWrapper = document.createElement("div");
+      swiperWrapper.classList.add("swiper-wrapper");
 
+      const cards = companyReviewCards.querySelectorAll(".company-card");
+      cards.forEach((card) => {
+        const slide = document.createElement("div");
+        slide.classList.add("swiper-slide");
+        slide.appendChild(card);
+        swiperWrapper.appendChild(slide);
+      });
+
+      const pagination = document.createElement("div");
+      pagination.classList.add("swiper-pagination");
+
+      swiperContainer.appendChild(swiperWrapper);
+      swiperContainer.appendChild(pagination);
+
+      companyReviewCards.replaceWith(swiperContainer);
+
+      //  used swiperContainer instead of requerying
+      new Swiper(swiperContainer, {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        pagination: {
+          el: pagination,
+          clickable: true,
+        },
+      });
+    }
+  }
+});
 
 
 </script>
 
-
-
-
-
-
-
-
- 
-  
 
 
 

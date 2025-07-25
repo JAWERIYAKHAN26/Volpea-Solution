@@ -54,7 +54,11 @@ A simple and interactive web application that:
 
 ## 📸 Screenshots
 
-![index.html](screenshot/age%20&%20geolocation%20webpage.png)
+### 🖥️ Desktop View
+![Desktop Screenshot](screenshot/age%20&%20geolocation%20webpage.png)
+
+### 📱 Mobile View
+![Mobile Screenshot](screenshot/mobile-agegeolocation.png)
 
 ---
 

@@ -67,23 +67,88 @@
     <button id="resetBtn">Reset</button>
   </main>
 
+  <!-- Age Prompt Modal -->
+  <div id="ageModal" class="modal">
+    <div class="modal-content">
+      <h3>Please Enter Your Age</h3>
+      <input type="number" id="modal-age-input" min="1" max="120" required />
+      <br><br>
+      <button id="age-submit-btn">Submit</button>
+    </div>
+  </div>
+
+  <!-- Country Confirmation Modal -->
+  <div id="countryConfirmModal" class="modal">
+    <div class="modal-content">
+      <p id="countryConfirmText"></p>
+      <button id="confirmYes">Yes</button>
+      <button id="confirmNo">No</button>
+    </div>
+  </div>
+
   <footer>
     <p>&copy; 2025 Volpea Solutions | All rights reserved.</p>
   </footer>
 
   <script>
-    // Prompt user age before anything else
-    const promptedAge = parseInt(prompt("Please enter your age:"));
+    let programmaticCountryChange = false;
 
-    if (isNaN(promptedAge)) {
-      alert("Invalid input. Please enter a number.");
-      window.location.href = "https://example.com/restricted.html";
-    } else if (promptedAge < 18) {
-      alert("You must be at least 18 years old to continue.");
-      window.location.href = "https://example.com/restricted.html";
-    } else {
-      window.promptedAge = promptedAge;
-    }
+    // Modal age prompt
+    const ageModal = document.getElementById("ageModal");
+    const ageInput = document.getElementById("modal-age-input");
+    const ageSubmitBtn = document.getElementById("age-submit-btn");
+
+    ageModal.style.display = "block";
+
+    ageSubmitBtn.addEventListener("click", () => {
+      const age = parseInt(ageInput.value);
+      if (isNaN(age)) {
+        alert("Invalid input. Please enter a number.");
+        return;
+      }
+      if (age < 18) {
+        window.location.href = "https://example.com/restricted.html";
+      } else {
+        window.promptedAge = age;
+        ageModal.style.display = "none";
+
+        // ✅ Fetch IP & Country only after valid age
+        const ipDisplay = document.getElementById("ip-address");
+        const countrySelect = document.getElementById("country-select");
+        let ipCountryCode = "";
+
+        fetch("https://ipinfo.io/json?token=36ab21b59db96f")
+          .then(res => res.json())
+          .then(data => {
+            ipDisplay.textContent = data.ip;
+            const countryNames = {
+              PK: "Pakistan", US: "USA", IN: "India", DE: "Germany", JP: "Japan"
+            };
+            ipCountryCode = data.country;
+            const fullCountryName = countryNames[data.country] || data.country;
+            document.getElementById("country-name").textContent = fullCountryName;
+
+            if (!localStorage.getItem("country")) {
+              countrySelect.value = data.country;
+              countrySelect.dispatchEvent(new Event("change"));
+            }
+
+            localStorage.setItem("ip", data.ip);
+            localStorage.setItem("countryFromIP", data.country);
+             const storedCountry = localStorage.getItem("country");
+      if (storedCountry) {
+     programmaticCountryChange = true;
+countrySelect.value = data.country;
+countrySelect.dispatchEvent(new Event("change"));
+
+      }
+          })
+          .catch(() => {
+            ipDisplay.textContent = "Failed to load IP";
+            document.getElementById("country-name").textContent = "Failed to load country";
+          });
+      }
+    });
 
     document.addEventListener("DOMContentLoaded", () => {
       const ipDisplay = document.getElementById("ip-address");
@@ -94,9 +159,9 @@
       const resetBtn = document.getElementById("resetBtn");
       const warningBox = document.getElementById("age-warning");
 
-      let ipCountryCode = ""; // Save detected country from IP
+      let ipCountryCode = "";
 
-      // Theme load
+      // Theme
       const savedTheme = localStorage.getItem("theme");
       if (savedTheme === "dark") {
         document.body.classList.add("dark");
@@ -108,31 +173,6 @@
         localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
       });
 
-      // Get user IP + Country
-      fetch("https://ipinfo.io/json?token=36ab21b59db96f")
-        .then(res => res.json())
-        .then(data => {
-          ipDisplay.textContent = data.ip;
-          const countryNames = {
-            PK: "Pakistan", US: "USA", IN: "India", DE: "Germany", JP: "Japan"
-          };
-          ipCountryCode = data.country;
-          const fullCountryName = countryNames[data.country] || data.country;
-          document.getElementById("country-name").textContent = fullCountryName;
-
-          if (!localStorage.getItem("country")) {
-            countrySelect.value = data.country;
-            countrySelect.dispatchEvent(new Event("change"));
-          }
-
-          localStorage.setItem("ip", data.ip);
-          localStorage.setItem("countryFromIP", data.country);
-        })
-        .catch(() => {
-          ipDisplay.textContent = "Failed to load IP";
-          document.getElementById("country-name").textContent = "Failed to load country";
-        });
-
       const countryFacts = {
         US: "Bald Eagle is the national bird.",
         PK: "Home to the world's second highest mountain, K2.",
@@ -141,7 +181,30 @@
         JP: "Japan has more than 1500 earthquakes each year."
       };
 
+      function fetchCountryData(code) {
+        fetch(`https://restcountries.com/v3.1/alpha/${code}`)
+          .then(res => res.json())
+          .then(data => {
+            flagImg.src = data[0].flags.svg;
+            flagImg.alt = `${code} Flag`;
+            factText.textContent = countryFacts[code] || "Fun fact not available.";
+          })
+          .catch(() => {
+            flagImg.src = "";
+            factText.textContent = "Unable to load flag or fact.";
+          });
+      }
+
       countrySelect.addEventListener("change", (e) => {
+        //
+          if (programmaticCountryChange) {
+    programmaticCountryChange = false; // reset the flag
+    const selectedCountry = countrySelect.value;
+    localStorage.setItem("country", selectedCountry);
+    fetchCountryData(selectedCountry);
+    return;
+  }
+        //
         const selectedCountry = countrySelect.value;
         const storedFromIP = localStorage.getItem("countryFromIP");
 
@@ -149,50 +212,49 @@
           const countryNames = {
             PK: "Pakistan", US: "USA", IN: "India", DE: "Germany", JP: "Japan"
           };
-          const confirmChange = confirm(
-            `Your IP shows you're in ${countryNames[storedFromIP] || storedFromIP}, but you selected ${countryNames[selectedCountry] || selectedCountry}. Are you sure you want to continue?`
-          );
-          if (!confirmChange) {
+
+          const countryConfirmModal = document.getElementById("countryConfirmModal");
+          const countryConfirmText = document.getElementById("countryConfirmText");
+          const confirmYesBtn = document.getElementById("confirmYes");
+          const confirmNoBtn = document.getElementById("confirmNo");
+
+          countryConfirmText.textContent = `Your IP shows you're in ${countryNames[storedFromIP] || storedFromIP}, but you selected ${countryNames[selectedCountry] || selectedCountry}. Are you sure you want to continue?`;
+
+          countryConfirmModal.style.display = "block";
+
+          confirmYesBtn.onclick = () => {
+            countryConfirmModal.style.display = "none";
+            localStorage.setItem("country", selectedCountry);
+            fetchCountryData(selectedCountry);
+          };
+
+          confirmNoBtn.onclick = () => {
             countrySelect.value = storedFromIP;
-            return;
-          }
+            countryConfirmModal.style.display = "none";
+          };
+
+          return;
         }
 
         localStorage.setItem("country", selectedCountry);
-
-        fetch(`https://restcountries.com/v3.1/alpha/${selectedCountry}`)
-          .then(res => res.json())
-          .then(data => {
-            flagImg.src = data[0].flags.svg;
-            flagImg.alt = `${selectedCountry} Flag`;
-            factText.textContent = countryFacts[selectedCountry] || "Fun fact not available.";
-          })
-          .catch(() => {
-            flagImg.src = "";
-            factText.textContent = "Unable to load flag or fact.";
-          });
+        fetchCountryData(selectedCountry);
       });
 
-      // Load previously selected country (if stored)
-      const storedCountry = localStorage.getItem("country");
-      if (storedCountry) {
-        countrySelect.value = storedCountry;
-        countrySelect.dispatchEvent(new Event("change"));
-      }
+      // Load stored country
+     
 
       resetBtn.addEventListener("click", () => {
         localStorage.clear();
-        document.getElementById("country-select").selectedIndex = 0;
+        countrySelect.selectedIndex = 0;
         ipDisplay.textContent = "";
         document.getElementById("country-name").textContent = "";
         flagImg.src = "";
         factText.textContent = "Select a country to see the fact.";
-        document.getElementById("age-warning").textContent = "";
+        warningBox.textContent = "";
         document.getElementById("ageResult").textContent = "";
         location.reload();
       });
 
-      // Age calculator function
       window.calculateAge = function () {
         const day = parseInt(document.getElementById("day").value);
         const month = parseInt(document.getElementById("month").value);

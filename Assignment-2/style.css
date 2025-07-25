@@ -177,3 +177,14 @@ footer {
     margin-top: 10px;
     cursor: pointer;
   }
+  .card {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+@media (max-width: 600px) {
+  .card {
+    width: 90%;
+    padding: 20px;
+  }
+}
+

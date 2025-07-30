@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCQ Quiz App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Start Page -->
+  <div id="start-page" class="active">
+    <h1>Welcome to the Quiz</h1>
+    <p>Test your knowledge! You have 50 seconds to complete the quiz.</p>
+    <p>Total Questions: 5</p>
+    <button id="start-btn">Start Quiz</button>
+  </div>
+
+  <!-- Quiz Interface -->
+  <div id="quiz-container">
+    <div class="top-bar">
+      <span id="score-display">Score: 0</span>
+      <span id="timer">Time Left: 50s</span>
+    </div>
+    <div id="question-container">
+      <h2 id="question"></h2>
+      <div id="options"></div>
+    </div>
+    <button id="next-btn" disabled>Next</button>
+  </div>
+
+  <!-- Result Page -->
+  <div id="result-page">
+    <h2>Quiz Completed!</h2>
+    <p id="final-score"></p>
+    <p id="percentage"></p>
+    <p id="time-used"></p>
+    <button id="restart-btn">Try Again</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

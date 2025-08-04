@@ -339,3 +339,123 @@ document.querySelectorAll('nav a').forEach(link => {
     }
   });
 });
+
+// search functionality
+// =========================
+// PRODUCT SEARCH FILTER
+// =========================
+const searchInput = document.getElementById('searchInput');
+const searchIcon = document.getElementById('searchIcon');
+
+// Function to filter products
+function filterProducts() {
+  const query = searchInput.value.toLowerCase().trim();
+  
+  const filtered = products.filter(product =>
+    product.name.toLowerCase().includes(query)
+  );
+
+  displayFilteredProducts(filtered);
+}
+
+// Function to display only filtered products
+function displayFilteredProducts(filteredProducts) {
+  productsContainer.innerHTML = '';
+
+  if (filteredProducts.length === 0) {
+    productsContainer.innerHTML = `<p style="text-align:center;">No products found</p>`;
+    return;
+  }
+
+  filteredProducts.forEach((product) => {
+    const card = document.createElement('div');
+    card.classList.add('product-card');
+
+    // Stars
+    const fullStars = Math.floor(product.rating);
+    const halfStar = product.rating % 1 >= 0.5;
+    let starsHTML = '';
+    for (let i = 0; i < fullStars; i++) starsHTML += '<i class="fas fa-star"></i>';
+    if (halfStar) starsHTML += '<i class="fas fa-star-half-alt"></i>';
+    for (let i = fullStars + (halfStar ? 1 : 0); i < 5; i++) starsHTML += '<i class="far fa-star"></i>';
+
+    // Thumbnails
+    const thumbsHTML = product.thumbnails
+      ? product.thumbnails.map(t => `<img src="${t}" class="thumb" alt="">`).join('')
+      : '';
+
+    card.innerHTML = `
+      <img class="main-img" src="${product.image}" alt="${product.name}">
+      <div class="product-info">
+        <div class="product-name">${product.name}</div>
+        <div class="rating">${starsHTML}<span>${product.rating}/5 (${product.reviews})</span></div>
+        <div class="product-price">$${product.price}</div>
+        <div class="thumbnails">${thumbsHTML}</div>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+    `;
+
+    productsContainer.appendChild(card);
+
+    // Thumbnail click to change main image
+    card.querySelectorAll('.thumb').forEach(thumb => {
+      thumb.addEventListener('click', () => card.querySelector('.main-img').src = thumb.src);
+    });
+
+    // Add to cart
+    card.querySelector('.add-to-cart').addEventListener('click', () => addToCart(product));
+  });
+}
+
+// Trigger search on typing or clicking icon
+searchInput.addEventListener('input', filterProducts);
+searchIcon.addEventListener('click', filterProducts);
+// 
+
+const suggestionsList = document.getElementById('searchSuggestions');
+
+function showSuggestions(query) {
+  const filteredNames = products
+    .filter(product => product.name.toLowerCase().includes(query))
+    .map(product => product.name);
+
+  suggestionsList.innerHTML = '';
+
+  if (query && filteredNames.length > 0) {
+    filteredNames.forEach(name => {
+      const li = document.createElement('li');
+      li.textContent = name;
+      li.addEventListener('click', () => {
+        searchInput.value = name;
+        filterProducts();       // filter products by clicked suggestion
+        suggestionsList.style.display = 'none';
+      });
+      suggestionsList.appendChild(li);
+    });
+    suggestionsList.style.display = 'block';
+  } else {
+    suggestionsList.style.display = 'none';
+  }
+}
+
+// Update filterProducts to also show suggestions
+function filterProducts() {
+  const query = searchInput.value.toLowerCase().trim();
+   // Only show suggestions if user is typing
+  if (document.activeElement === searchInput && query) 
+  
+  showSuggestions(query); // show dropdown suggestions
+
+  const filtered = products.filter(product =>
+    product.name.toLowerCase().includes(query)
+  );
+
+  displayFilteredProducts(filtered);
+}
+
+// Hide suggestions when clicking outside
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.search-container')) {
+    suggestionsList.style.display = 'none';
+  }
+});

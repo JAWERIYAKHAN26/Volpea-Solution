@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Smith's Shoes Store</title>
-  <link rel="icon" type="image/png" href="Assets\lop.jpg">
+<link rel="icon" type="image/png" href="Assets/lop.jpg?v=3">
+
 
 
   <!-- External CSS -->
@@ -39,6 +40,15 @@
     </nav>
 
     <div class="header-right">
+
+     
+  <!-- Search Box -->
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search products...">
+    <i class="fas fa-search" id="searchIcon"></i>
+    <ul id="searchSuggestions" class="suggestions"></ul>
+  </div>
+
       <!--  -->
      <i class="fas fa-shopping-cart">
   <span id="cartCount" class="cart-count">0</span>

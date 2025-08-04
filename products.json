@@ -1,0 +1,75 @@
+[
+  {
+    "name": "The Skyler",
+    "price": 375,
+    "image": "Assets/s1.jpg",
+    "rating": 4.6,
+    "reviews": 18,
+    "thumbnails": ["Assets/s2.jpg", "Assets/s3.jpg"]
+  },
+  {
+    "name": "The Maverick",
+    "price": 420,
+    "image": "Assets/s2.jpg",
+    "rating": 4.0,
+    "reviews": 25,
+    "thumbnails": ["Assets/s4.jpg", "Assets/s5.jpg"]
+  },
+  {
+    "name": "The Classic",
+    "price": 310,
+    "image": "Assets/s3.jpg",
+    "rating": 3.5,
+    "reviews": 12,
+    "thumbnails": ["Assets/s6.jpg", "Assets/s2.jpg"]
+  },
+  {
+"name": "Comfees",
+    "price": 456,
+    "image": "Assets/s8.jpg",
+    "rating": 4,
+    "reviews": 79,
+    "thumbnails": ["Assets/s9.jpg", "Assets/s10.jpg"]
+  },
+  {
+    "name": "Slip Sneakers",
+    "price": 789,
+    "image": "https://i.pinimg.com/736x/52/8e/14/528e147bb818861b9b0f245e55233676.jpg",
+    "rating":3.2 ,
+    "reviews":18 ,
+    "thumbnails": ["Assets/s2.jpg", "Assets/s3.jpg"]
+  },
+  {
+    "name": "Kesicikeziban",
+    "price": 899,
+    "image": "https://i.pinimg.com/1200x/dd/a1/47/dda1476487ae02a4e1a38626fccc6aab.jpg",
+    "rating":5 ,
+    "reviews":18 ,
+    "thumbnails": ["Assets/s2.jpg", "Assets/s3.jpg"] 
+  },
+   {
+    "name": "Shoes",
+    "price": 899,
+    "image": "https://i.pinimg.com/1200x/67/9c/1f/679c1f9f870512ba656642e046b1f922.jpg",
+    "rating":5,
+    "reviews":18 ,
+    "thumbnails": ["Assets/s2.jpg ", "Assets/s3.jpg"] 
+  },
+  {
+      "name": "Mulier",
+    "price": 1000,
+    "image": "https://i.pinimg.com/736x/89/11/1d/89111dc9d949a89e6b1a4ce9505b495a.jpg",
+    "rating":5,
+    "reviews":67 ,
+    "thumbnails": ["Assets/s2.jpg", "Assets/s3.jpg"] 
+  },
+    {
+      "name": "Loraca",
+    "price": 1000,
+    "image": "https://i.pinimg.com/736x/ae/79/08/ae79083cbefd21a26c15e7d120d21c4c.jpg",
+    "rating":5,
+    "reviews":97 ,
+    "thumbnails": ["Assets/s2.jpg"," Assets/s3.jpg"] 
+  }
+
+]

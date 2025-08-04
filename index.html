@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smith's Shoes Store</title>
+  <link rel="icon" type="image/png" href="Assets\lop.jpg">
+
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">Smith's Shoes</div>
+    
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Services</a></li>
+        <li>
+          <a href="#">Categories</a>
+          <ul class="dropdown">
+            <li><a href="#">Men's Footwear - Shoes</a></li>
+            <li><a href="#">Men's Footwear - Sneakers</a></li>
+            <li><a href="#">Women's Footwear - Shoes</a></li>
+            <li><a href="#">Women's Footwear - Sneakers</a></li>
+            <li><a href="#">Kids' Footwear - Shoes</a></li>
+            <li><a href="#">Kids' Footwear - Sneakers</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-right">
+      <!--  -->
+     <i class="fas fa-shopping-cart">
+  <span id="cartCount" class="cart-count">0</span>
+</i>
+
+      <i class="fas fa-user" id="profileIcon"></i>
+    </div>
+  </header>
+
+  <!-- ===== SHOP CONTENT ===== -->
+  <main id="shopContent">
+    <section class="hero">
+      <video autoplay muted loop playsinline class="hero-video">
+        <source src="Assets\addidas.mp4" type="video/mp4">
+      </video>
+      <div class="hero-text">International Shoes Store</div>
+    </section>
+
+    <section class="curated-section">
+      CURATED BY THE HOUSE
+    </section>
+
+    <section class="products" id="products"></section>
+  </main>
+
+  <!-- ===== ADMIN PANEL ===== -->
+  <section id="adminPanel" style="display:none;">
+    <div class="header">
+      <h1>Admin Panel</h1>
+    </div>
+
+    <div class="form-container">
+      <h3 id="formTitle">Add Product</h3>
+      <input type="text" id="name" placeholder="Product Name">
+      <input type="number" id="price" placeholder="Price">
+      <input type="text" id="image" placeholder="Main Image URL">
+      <input type="number" id="rating" placeholder="Rating (0-5)" step="0.1">
+      <input type="number" id="reviews" placeholder="Reviews Count">
+      <input type="text" id="thumbnails" placeholder="Thumbnail URLs (comma separated)">
+      <button onclick="addOrUpdateProduct()">Save</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Rating</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="productTable"></tbody>
+    </table>
+
+   
+    <div class="products" id="productsPreview"></div>
+  </section>
+
+  <!-- our services -->
+   <section class="services-section">
+  <h2>OUR SERVICES</h2>
+</section>
+
+
+  <!-- vedio cards -->
+<section class="video-cards">
+  <div class="video-card">
+    <video src="Assets/Cinematic shoe broll_ad.  Ankitbhatiachallenge Rhitam Soibam - Rhitam Soibam (1080p, h264).mp4" autoplay muted loop></video>
+   <p class="video-caption">PERSONALIZATION</p>
+  </div>
+  <div class="video-card">
+    <video src="Assets/SONY A7III CINEMATIC VIDEO  CALCETTO SHOES COMMERCIAL - Dr Cinematic (1080p, h264).mp4" autoplay muted loop></video>
+   <p class="video-caption">Book an Appointment</p>
+  </div>
+  <div class="video-card">
+    <video src="Assets/CGI  Puma Suede Shoe Ad  4K - Kevin Vandermarliere (1080p, h264).mp4 " autoplay muted loop></video>
+   <p class="video-caption">Collect In Store</p>
+  </div>
+</section>
+
+
+  <footer>&copy; 2025 Smith's Shoes | All Rights Reserved</footer>
+  
+  <!-- Admin Login Modal -->
+  <div class="modal" id="adminModal">
+    <div class="modal-content">
+      <h3>Admin Login</h3>
+      <input type="password" id="adminPassword" placeholder="Enter Password">
+      <p style="font-size:12px;color:gray;">Hint: 1234</p>
+      <button class="ok-btn" onclick="checkPassword()">OK</button>
+      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Incorrect Password Modal -->
+  <div class="modal" id="errorModal">
+    <div class="modal-content">
+      <h3>Incorrect Password!</h3>
+      <p>Please try again.</p>
+      <button class="ok-btn" onclick="retryLogin()">Retry</button>
+      <button class="cancel-btn" onclick="closeErrorModal()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- sidebar cart -->
+<!-- Cart Sidebar -->
+<div id="cartSidebar" class="cart-sidebar">
+  <span class="close-icon" onclick="closeCart()">❌</span>
+  <h3>Your Cart</h3>
+  <ul id="cartItems"></ul>
+  <div class="cart-footer">
+    <strong>Total: $<span id="cartTotal">0</span></strong>
+    <button id="checkoutBtn" class="add-to-cart">Checkout</button>
+  </div>
+</div>
+
+<!-- model  -->
+<!-- Custom Alert Modal -->
+<div class="modal" id="alertModal">
+  <div class="modal-content">
+    <h3 id="alertTitle">Alert</h3>
+    <p id="alertMessage"></p>
+    <button class="ok-btn" onclick="closeAlertModal()">OK</button>
+  </div>
+</div>
+
+
+  <script src="script.js"></script>
+</body>
+</html>
